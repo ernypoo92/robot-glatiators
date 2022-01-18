@@ -1,3 +1,7 @@
+var randomNumber = (min, max) => {
+    var Value = Math.floor(Math.random() * (max - min + 1) + min);
+    return Value;
+};
 
 //fight function
 var fight = function(enemy) {
@@ -61,60 +65,7 @@ var fight = function(enemy) {
     }
 };
 
-var randomNumber = (min, max) => {
-    var Value = Math.floor(Math.random() * (max - min + 1) + min);
-    return Value;
-};
 
-var palyerInfo = {
-    name: window.prompt("What is your robots name?"),
-    health: 100,
-    attack: 10,
-    money: 10
-    reset: function() {
-        this.health = 100;
-        this.money = 10;
-        this.attack = 10;
-    },
-    refillHealth: function() {
-        if ( this.money >= 7) {
-            window.alert("Refilling palyer's health by 20 for 7 dollars.")
-            this.health += 20;
-            this.money -= 7;
-        }
-        else {
-            window.alert("You don't have enough money!")
-        }
-    },
-    upgradeAttack: function() {
-        if (this.money >= 7) {
-            window.alert("Upgrading player's attack by 6 for 7 dollars.")
-            this.attack += 6
-            this.money -= 7
-        }
-        else {
-            window.alert("You don't have enough money!")
-        }
-    }
-};
-
-// You can also log multiple values at once like this
-console.log(palyerInfo.name, palyerInfo.attack, palyerInfo.health);
-
-var enemyInfo = [
-    {
-        name: "Brobot",
-        attack: randomNumber(10, 14)
-    },
-    {
-        name: "Amy Android",
-        attack: randomNumber(10, 14)
-    },
-    {
-        name: "Robo Tumble",
-        attack: randomNumber(10, 14)
-    }
-];
 
 //function to start new game
 var startGame = function() {
@@ -123,6 +74,7 @@ var startGame = function() {
     for (var i = 0; i < enemyInfo.length; i++) {
         if (palyerInfo.health > 0) {
             window.alert("Welcome to Robot Gladiators! Round" + (i + 1));
+            debugger;
             var pickedEnemyObj = enemyInfo[i];
             pickedEnemyObj.health = randomNumber(40, 60);
             fight(pickedEnemyObj);
@@ -167,7 +119,7 @@ var shop = function () {
     var shopOptionPrompt = window.prompt(
         "Would you like to REFILL your health, UPGRADE your attack, or LEAVE the store? Please enter one: 'REFILL', 'UPGRADE', or 'LEAVE' to make a choice."
     );
-
+    
     switch (shopOptionPrompt) {
         case "refill":
         case "REFILL":
@@ -182,14 +134,62 @@ var shop = function () {
             window.alert("Leaving the store.");
             break;
         default:
-        window.alert("You did not pick a valid option. Try again.");
-        
-        // call shop() again to force player to pick a valid option
-        shop();
-        break;
+            window.alert("You did not pick a valid option. Try again.");
+            
+            // call shop() again to force player to pick a valid option
+            shop();
+            break;
     }
 };
 
+var palyerInfo = {
+    name: window.prompt("What is your robot's name?"),
+    health: 100,
+    attack: 10,
+    money: 10,
+    reset: function() {
+        this.health = 100;
+        this.money = 10;
+        this.attack = 10;
+    },
+    refillHealth: function() {
+        if ( this.money >= 7) {
+            window.alert("Refilling palyer's health by 20 for 7 dollars.")
+            this.health += 20;
+            this.money -= 7;
+        }
+        else {
+            window.alert("You don't have enough money!")
+        }
+    },
+    upgradeAttack: function() {
+        if (this.money >= 7) {
+            window.alert("Upgrading player's attack by 6 for 7 dollars.")
+            this.attack += 6
+            this.money -= 7
+        }
+        else {
+            window.alert("You don't have enough money!")
+        }
+    }
+};
 
+// You can also log multiple values at once like this
+console.log(palyerInfo.name, palyerInfo.attack, palyerInfo.health);
+
+var enemyInfo = [
+    {
+        name: "Brobot",
+        attack: randomNumber(10, 14)
+    },
+    {
+        name: "Amy Android",
+        attack: randomNumber(10, 14)
+    },
+    {
+        name: "Robo Tumble",
+        attack: randomNumber(10, 14)
+    }
+];
 // start the game when the page loads
 startGame ();
