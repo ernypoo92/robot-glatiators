@@ -30,51 +30,67 @@ var fightOrSkip = function() {
     return false;
 }
 
+
 //fight function
 var fight = function(enemy) {
+    // keep track of who goes first
+    var isPlayerTurn = true
+    
+    if (Math.random() > 0.5){
+        isPlayerTurn = false;
+    }
+
     // repeat and execute as long as the enemy-robot is alive 
     while(palyerInfo.health >0 && enemy.health > 0) {
-        // ask player if they'd like to fight or skip using fightOrSkip function
-        if (fightOrSkip()) {
-            // if true, leave fight by breaking loop
-            break;
-        }
+        if (isPlayerTurn){
+            // ask player if they'd like to fight or skip using fightOrSkip function
+            if (fightOrSkip()) {
+                // if true, leave fight by breaking loop
+                break;
+            }
+            
+            // remove enemy's health by subtracting the amount set in the palyerInfo.attack variable
+            var damage = randomNumber(palyerInfo.attack-3, palyerInfo.attack);
 
-        // remove enemy's health by subtracting the amount set in the palyerInfo.attack variable
-        var damage = randomNumber(palyerInfo.attack-3, palyerInfo.attack);
-        enemy.health = Math.max(0, enemy.health - damage);
-        console.log(
-        palyerInfo.name + " attacked " + enemy.name + ". " + enemy.name + " now has " + enemy.health + " health remaining.");
-        
-        // check enemy's health
-        if (enemy.health <= 0) {
-            window.alert(enemy.name + " has died!");
+            enemy.health = Math.max(0, enemy.health - damage);
+            console.log(
+                palyerInfo.name + " attacked " + enemy.name + ". " + enemy.name + " now has " + enemy.health + " health remaining.");
+                
+            // check enemy's health
+            if (enemy.health <= 0) {
+                window.alert(enemy.name + " has died!");
+                
+                // award player money for winning
+                palyerInfo.money = palyerInfo.money + 20;
+                
+                // leave while() loop since enemy is dead
+                break;
+            } 
             
-            // award player money for winning
-            palyerInfo.money = palyerInfo.money + 20;
-            
-            // leave while() loop since enemy is dead
-            break;
-        } 
-        
-        else {
-            window.alert(enemy.name + " still has " + enemy.health + " health left.");
+            else {
+                window.alert(enemy.name + " still has " + enemy.health + " health left.");
+            }
         }
-        
-        // remove player's health by subtracting the amount set in the enemy.attack variable
-        var damage = randomNumber(enemy.attack-3, enemy.attack);
-        palyerInfo.health = Math.max(0, palyerInfo.health - damage);
-        console.log(enemy.name + " attacked " + palyerInfo.name + ". " + palyerInfo.name + " now has " + palyerInfo.health + " health remaining.");
+        // player gets attacted first
+        else{
+
+            // remove player's health by subtracting the amount set in the enemy.attack variable
+            var damage = randomNumber(enemy.attack-3, enemy.attack);
+            palyerInfo.health = Math.max(0, palyerInfo.health - damage);
+            console.log(enemy.name + " attacked " + palyerInfo.name + ". " + palyerInfo.name + " now has " + palyerInfo.health + " health remaining.");
             
-        // check player's health
-        if (palyerInfo.health <= 0) {
-            window.alert(palyerInfo.name + " has died!");
-            break;
-        } 
-        
-        else {
-            window.alert(palyerInfo.name + " still has " + palyerInfo.health + " health left.");
+            // check player's health
+            if (palyerInfo.health <= 0) {
+                window.alert(palyerInfo.name + " has died!");
+                break;
+            } 
+            
+            else {
+                window.alert(palyerInfo.name + " still has " + palyerInfo.health + " health left.");
+            }
         }
+        // switch turn order for next round
+        isPlayerTurn = !isPlayerTurn;
     }
 };
 
