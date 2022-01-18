@@ -3,30 +3,43 @@ var randomNumber = (min, max) => {
     return Value;
 };
 
+var fightOrSkip = function() {
+    var promptFight = window.prompt ('Would you like to FIGHT or SKIP this battle? Enter "FIGHT" or "SKIP" to choose.');
+    // if the `promptFight` is NOT a valid value, then execute the following statements.
+    if (promptFight === "" || promptFight === null) {
+        window.alert ("You need to provide a valid answer! Please try again.");
+        return fightOrSkip ();
+    }
+
+    // convert promptFight to all lowercase so we can check with less options
+    promptFight = promptFight.toLowerCase ();
+
+    // if player choses to skip
+    if (promptFight === "skip") {
+        // confirm player wants to skip
+        var confirmSkip = window.confirm("Are you sure you'd like to quit?");
+        
+        // if yes (true), leave fight
+        if (confirmSkip) {
+            window.alert(palyerInfo.name + " has decided to skip this fight. Goodbye!");
+            // subtract money from palyerInfo.money for skipping
+            palyerInfo.money = Math.max(0, palyerInfo.money - 10);
+            return true;
+        }
+    } 
+    return false;
+}
+
 //fight function
 var fight = function(enemy) {
     // repeat and execute as long as the enemy-robot is alive 
     while(palyerInfo.health >0 && enemy.health > 0) {
-        
-        var promptFight = window.prompt("Would you like to FIGHT or SKIP this battle? Enter 'FIGHT' or 'SKIP' to choose.");
-        // Log result of promptFight
-        console.log(promptFight);
-        
-        // if player choses to skip
-        if (promptFight === "skip" || promptFight === "SKIP") {
-            // confirm player wants to skip
-            var confirmSkip = window.confirm("Are you sure you'd like to quit?");
-            
-            // if yes (true), leave fight
-            if (confirmSkip) {
-                window.alert(palyerInfo.name + " has decided to skip this fight. Goodbye!");
-                // subtract money from palyerInfo.money for skipping
-                palyerInfo.money = Math.max(0, palyerInfo.money - 10);
-                console.log("palyerInfo.money", palyerInfo.money)
-                break;
-            }
-        } 
-        
+        // ask player if they'd like to fight or skip using fightOrSkip function
+        if (fightOrSkip()) {
+            // if true, leave fight by breaking loop
+            break;
+        }
+
         // remove enemy's health by subtracting the amount set in the palyerInfo.attack variable
         var damage = randomNumber(palyerInfo.attack-3, palyerInfo.attack);
         enemy.health = Math.max(0, enemy.health - damage);
@@ -64,8 +77,6 @@ var fight = function(enemy) {
         }
     }
 };
-
-
 
 //function to start new game
 var startGame = function() {
